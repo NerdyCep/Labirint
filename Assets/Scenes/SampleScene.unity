@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9299,7 +9299,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1596834043}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.988, z: 0.241}
+  m_LocalPosition: {x: 0.006, y: 1.18, z: 0.515}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13542,7 +13542,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   debugTransform: {fileID: 1192633263}
-  pfBulletProjectile: {fileID: 761628080153469244, guid: fd5e4337aa635d7499799eb5e225b789, type: 3}
+  pfBulletProjectile: {fileID: 3458605750899034291, guid: 66fdef78aa87d3548985cec7022d1f9d, type: 3}
   spawnBulletPosition: {fileID: 1596834044}
 --- !u!1 &7933000988669841769
 GameObject:

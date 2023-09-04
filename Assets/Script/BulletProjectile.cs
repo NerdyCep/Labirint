@@ -18,6 +18,6 @@ public class BulletProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

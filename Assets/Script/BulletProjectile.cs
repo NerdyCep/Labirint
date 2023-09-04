@@ -12,12 +12,12 @@ public class BulletProjectile : MonoBehaviour
     }
     private void Start()
     {
-        float speed = 80f;
+        float speed = 10f;
         bulletRigitbody.velocity = transform.forward * speed;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }

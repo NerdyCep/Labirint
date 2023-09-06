@@ -5,9 +5,11 @@ using Cinemachine;
 using StarterAssets;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem;
+using UnityEngine.Animations.Rigging;
 
 public class ThirdPersonShooterController : MonoBehaviour
 {
+    [SerializeField] private Rig aimRig;
     [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
     [SerializeField] private float normalSensivity;
     [SerializeField] private float aimSensivity;
@@ -20,18 +22,74 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private StarterAssetsInputs starterAssetsInputs;
     private ThirdPersonController thirdPersonController;
-    private Animator animator;
+    private float aimRigWeight;
+    private Vector3 mouseWorldPosition = Vector3.zero;
+
 
     private void Awake()
     {
         thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
-        animator = GetComponent<Animator>();
+        
     }
     private void Update()
     {
-        Vector3 mouseWorldPosition = Vector3.zero;
+        MouseWorldPosition();
+        OnAimStart();
 
+       
+
+    }
+
+        
+    private void OnSooting()
+    {
+        if (starterAssetsInputs.shoot)
+        {
+
+            Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
+            Instantiate(pfBulletProjectile, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
+            starterAssetsInputs.shoot = false;
+            aimRigWeight = 0.9f;
+            aimRig.weight = Mathf.Lerp(aimRig.weight, aimRigWeight, Time.deltaTime * 20f);
+
+
+
+        }
+    }
+
+    private void OnAimStart()
+    {
+       
+        if (starterAssetsInputs.aim)
+        {
+            crossHair.SetActive(true);
+            aimVirtualCamera.gameObject.SetActive(true);
+            thirdPersonController.SetSensitivity(aimSensivity);
+            thirdPersonController.SetRotateOnMove(false);
+            aimRig.weight = 1f;
+
+            Vector3 worldAimTarget = mouseWorldPosition;
+            worldAimTarget.y = transform.position.y;
+            Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
+
+            transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+
+            OnSooting();
+
+        }
+        else
+        {
+            crossHair.SetActive(false);
+            aimVirtualCamera.gameObject.SetActive(false);
+            thirdPersonController.SetSensitivity(normalSensivity);
+            thirdPersonController.SetRotateOnMove(true);
+            aimRig.weight = 0f;
+
+        }
+    }
+    private void MouseWorldPosition()
+    {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
@@ -39,37 +97,6 @@ public class ThirdPersonShooterController : MonoBehaviour
             debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
         }
-        if (starterAssetsInputs.aim)
-        {
-            crossHair.SetActive(true);
-            aimVirtualCamera.gameObject.SetActive(true);
-            thirdPersonController.SetSensitivity(aimSensivity);
-            thirdPersonController.SetRotateOnMove(false);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
-
-            Vector3 worldAimTarget = mouseWorldPosition;
-            worldAimTarget.y = transform.position.y;
-            Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-
-            transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime *20f);
-
-        if (starterAssetsInputs.shoot)
-        {
-            Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
-            Instantiate(pfBulletProjectile, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
-            starterAssetsInputs.shoot = false;
-        }
-
-        } else
-        {
-            crossHair.SetActive(false);
-            aimVirtualCamera.gameObject.SetActive(false);
-            thirdPersonController.SetSensitivity(normalSensivity);
-            thirdPersonController.SetRotateOnMove(true);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0, Time.deltaTime * 10f));
-        }
-
-        
-
     }
+    
 }

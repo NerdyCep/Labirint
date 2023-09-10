@@ -50,8 +50,8 @@ public class ThirdPersonShooterController : MonoBehaviour
             Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
             Instantiate(pfBulletProjectile, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
             starterAssetsInputs.shoot = false;
-            aimRigWeight = 0.9f;
-            aimRig.weight = Mathf.Lerp(aimRig.weight, aimRigWeight, Time.deltaTime * 20f);
+            
+            
 
 
 
@@ -67,13 +67,15 @@ public class ThirdPersonShooterController : MonoBehaviour
             aimVirtualCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensivity);
             thirdPersonController.SetRotateOnMove(false);
-            aimRig.weight = 1f;
+            
 
             Vector3 worldAimTarget = mouseWorldPosition;
             worldAimTarget.y = transform.position.y;
             Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
 
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+
+            aimRig.weight = 1f;
 
             OnSooting();
 
@@ -84,7 +86,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             aimVirtualCamera.gameObject.SetActive(false);
             thirdPersonController.SetSensitivity(normalSensivity);
             thirdPersonController.SetRotateOnMove(true);
-            aimRig.weight = 0f;
+            
 
         }
     }
